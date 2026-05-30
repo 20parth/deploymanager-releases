@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: deploymanager-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: deploymanager
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: deploymanager
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '127.0.0.1:5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U deploymanager']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: parthrb/deploymanager-api:latest
+    container_name: deploymanager-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ../backend/.env
+    environment:
+      DATABASE_URL: postgresql://deploymanager:secret@postgres:5432/deploymanager
+    ports:
+      - '127.0.0.1:5000:5000'
+
+  frontend:
+    image: parthrb/deploymanager-web:latest
+    container_name: deploymanager-web
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - '127.0.0.1:8080:80'
+
+volumes:
+  postgres_data:
