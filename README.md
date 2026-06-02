@@ -9,7 +9,7 @@
 No third-party CI servers. No per-seat pricing. Your server, your code, your rules.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.0.1-brightgreen.svg)](https://github.com/20parth/deploymanager-releases/releases)
+[![Version](https://img.shields.io/badge/version-3.0.0-brightgreen.svg)](https://github.com/20parth/deploymanager-releases/releases)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://postgresql.org)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg)](https://hub.docker.com/u/parthrb)

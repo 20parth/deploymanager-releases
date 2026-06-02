@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # DeployManager — unified installer
 # Usage:
+#   curl -fsSL https://deploymanager.parthrb.dev/install.sh | sudo bash
+# OR (to verify before running):
 #   curl -fsSL https://deploymanager.parthrb.dev/install.sh -o install.sh
-#   echo "b4fd20fe738b0200956bf0710606affd7f1d56514b55c203056f2e5fb6353791  install.sh" | sha256sum -c
 #   sudo bash install.sh
-#
-# NOTE: Do NOT pipe directly with | bash — sub-scripts are loaded from disk.
 
 set -euo pipefail
 
+BASE_URL="https://deploymanager.parthrb.dev"
 BOLD='\033[1m'; CYAN='\033[0;36m'; GREEN='\033[0;32m'; RESET='\033[0m'
 
 echo -e "${BOLD}${CYAN}
@@ -18,27 +18,30 @@ echo -e "${BOLD}${CYAN}
   ██║  ██║██╔══╝  ██╔═══╝ ██║     ██║   ██║  ╚██╔╝
   ██████╔╝███████╗██║     ███████╗╚██████╔╝   ██║
   ╚═════╝ ╚══════╝╚═╝     ╚══════╝ ╚═════╝    ╚═╝
-  MANAGER — Installer
+  MANAGER — Installer v3.0.0
 ${RESET}"
 
 echo -e "${BOLD}Choose installation method:${RESET}
 "
-echo "  1) Docker         — recommended, easiest, one command"
-echo "  2) Bare metal     — Node + PM2 + Nginx directly on the server"
+echo "  1) Bare metal  — Node + PM2 on your server (works with any hosting panel)"
+echo "  2) Docker      — containers only (not recommended if DeployManager will deploy host apps)"
 echo ""
 read -rp "Enter 1 or 2 [1]: " METHOD
 METHOD="${METHOD:-1}"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+TMPSCRIPTS=$(mktemp -d)
+trap 'rm -rf "$TMPSCRIPTS"' EXIT
 
 case "$METHOD" in
   1)
-    echo -e "\n${GREEN}▶ Running Docker installer...${RESET}\n"
-    bash "$SCRIPT_DIR/scripts/docker-install.sh"
+    echo -e "\n${GREEN}▶ Downloading bare-metal installer...${RESET}\n"
+    curl -fsSL "$BASE_URL/scripts/bare-metal-install.sh" -o "$TMPSCRIPTS/bare-metal-install.sh"
+    bash "$TMPSCRIPTS/bare-metal-install.sh"
     ;;
   2)
-    echo -e "\n${GREEN}▶ Running bare-metal installer...${RESET}\n"
-    bash "$SCRIPT_DIR/scripts/bare-metal-install.sh"
+    echo -e "\n${GREEN}▶ Downloading Docker installer...${RESET}\n"
+    curl -fsSL "$BASE_URL/scripts/docker-install.sh" -o "$TMPSCRIPTS/docker-install.sh"
+    bash "$TMPSCRIPTS/docker-install.sh"
     ;;
   *)
     echo "Invalid choice. Run again and enter 1 or 2."
