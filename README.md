@@ -98,8 +98,7 @@ Streams logs live in the browser  ✓ Done
 ### One-command installer
 
 ```bash
-curl -fsSL https://deploymanager.parthrb.dev/install.sh -o install.sh
-echo "b4fd20fe738b0200956bf0710606affd7f1d56514b55c203056f2e5fb6353791  install.sh" | sha256sum -c
+curl -fsSL https://20parth.github.io/deploymanager-releases/install.sh -o install.sh
 sudo bash install.sh
 ```
 
@@ -117,7 +116,7 @@ Then it automatically sets up PostgreSQL, Nginx, SSL, and firewall.
 <summary><b>🐳 Docker (recommended)</b></summary>
 
 ```bash
-curl -fsSL https://deploymanager.parthrb.dev/install.sh -o install.sh
+curl -fsSL https://20parth.github.io/deploymanager-releases/install.sh -o install.sh
 sudo bash install.sh
 # → choose option 1 (Docker)
 ```
@@ -130,7 +129,7 @@ Uses pre-built images from Docker Hub — no build required.
 <summary><b>🖥️ Bare metal (Node + PM2 + Nginx)</b></summary>
 
 ```bash
-curl -fsSL https://deploymanager.parthrb.dev/install.sh -o install.sh
+curl -fsSL https://20parth.github.io/deploymanager-releases/install.sh -o install.sh
 sudo bash install.sh
 # → choose option 2 (Bare metal)
 ```
@@ -144,7 +143,7 @@ Best when DeployManager needs to deploy apps directly on the host filesystem.
 
 ```bash
 # Download compose file
-curl -fsSL https://deploymanager.parthrb.dev/docker-compose.yml -o docker-compose.yml
+curl -fsSL https://20parth.github.io/deploymanager-releases/docker-compose.yml -o docker-compose.yml
 
 # Create backend config
 mkdir backend

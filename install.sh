@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 # DeployManager — unified installer
 # Usage:
-#   curl -fsSL https://deploymanager.parthrb.dev/install.sh | sudo bash
-# OR (to verify before running):
-#   curl -fsSL https://deploymanager.parthrb.dev/install.sh -o install.sh
-#   sudo bash install.sh
+#   curl -fsSL https://20parth.github.io/deploymanager-releases/install.sh | sudo bash
 
 set -euo pipefail
 
-BASE_URL="https://deploymanager.parthrb.dev"
+BASE_URL="https://20parth.github.io/deploymanager-releases"
 BOLD='\033[1m'; CYAN='\033[0;36m'; GREEN='\033[0;32m'; RESET='\033[0m'
 
 echo -e "${BOLD}${CYAN}
@@ -18,7 +15,7 @@ echo -e "${BOLD}${CYAN}
   ██║  ██║██╔══╝  ██╔═══╝ ██║     ██║   ██║  ╚██╔╝
   ██████╔╝███████╗██║     ███████╗╚██████╔╝   ██║
   ╚═════╝ ╚══════╝╚═╝     ╚══════╝ ╚═════╝    ╚═╝
-  MANAGER — Installer v3.0.0
+  MANAGER — Installer
 ${RESET}"
 
 echo -e "${BOLD}Choose installation method:${RESET}

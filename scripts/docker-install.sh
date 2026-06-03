@@ -67,7 +67,7 @@ success "Docker Compose ready"
 # ─── download compose file + scripts ─────────────────────────────────────────
 step "Setting up DeployManager"
 
-BASE_URL="https://deploymanager.parthrb.dev"
+BASE_URL="https://20parth.github.io/deploymanager-releases"
 mkdir -p "$INSTALL_DIR/docker" "$INSTALL_DIR/backend" "$INSTALL_DIR/scripts"
 
 curl -fsSL "$BASE_URL/docker-compose.yml" -o "$INSTALL_DIR/docker/docker-compose.yml"
