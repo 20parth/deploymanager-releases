@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: deploymanager
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: secret
       POSTGRES_DB: deploymanager
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -28,6 +28,8 @@ services:
         condition: service_healthy
     env_file:
       - ../backend/.env
+    environment:
+      DATABASE_URL: postgresql://deploymanager:secret@postgres:5432/deploymanager
     ports:
       - '127.0.0.1:5000:5000'
 

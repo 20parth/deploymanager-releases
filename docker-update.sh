@@ -3,12 +3,14 @@
 set -euo pipefail
 
 INSTALL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-cd "$INSTALL_DIR/docker"
+cd "$INSTALL_DIR"
 
-echo "▶ Pulling latest images..."
-docker compose pull
+echo "▶ Pulling latest code..."
+git pull
 
-echo "▶ Restarting containers..."
+echo "▶ Rebuilding containers..."
+cd docker
+docker compose build --no-cache
 docker compose up -d
 
 echo "▶ Running migrations..."
