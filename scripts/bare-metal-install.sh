@@ -3,9 +3,7 @@
 # Downloads pre-built release tarball — no source code access needed.
 set -euo pipefail
 
-RELEASE_VERSION="3.0.0"
-RELEASE_URL="https://github.com/20parth/deploymanager-releases/releases/download/v${RELEASE_VERSION}/deploymanager-v${RELEASE_VERSION}.tar.gz"
-RELEASE_SHA256="a998168b938502661209dbe485fafcbdf4786b106e027d7b9e5af61aeeea8693"
+GITHUB_REPO="20parth/deploymanager-releases"
 
 RED='\033[0;31m'; GREEN='\033[0;32m'; CYAN='\033[0;36m'; YELLOW='\033[1;33m'; BOLD='\033[1m'; RESET='\033[0m'
 info()    { echo -e "${CYAN}[INFO]${RESET}  $*"; }
@@ -13,6 +11,14 @@ success() { echo -e "${GREEN}[OK]${RESET}    $*"; }
 warn()    { echo -e "${YELLOW}[WARN]${RESET}  $*"; }
 error()   { echo -e "${RED}[ERROR]${RESET} $*"; exit 1; }
 step()    { echo -e "\n${BOLD}━━━  $*${RESET}"; }
+
+info "Fetching latest release..."
+RELEASE_VERSION=$(curl -fsSL "https://api.github.com/repos/${GITHUB_REPO}/releases/latest" \
+  | grep -o '"tag_name": *"v[^"]*"' | grep -o '[0-9][^"]*')
+[[ -z "$RELEASE_VERSION" ]] && error "Could not fetch latest version from GitHub."
+RELEASE_BASE="https://github.com/${GITHUB_REPO}/releases/download/v${RELEASE_VERSION}"
+RELEASE_URL="${RELEASE_BASE}/deploymanager-v${RELEASE_VERSION}.tar.gz"
+RELEASE_SHA256_URL="${RELEASE_BASE}/deploymanager-v${RELEASE_VERSION}.tar.gz.sha256"
 
 [[ $EUID -ne 0 ]] && error "Run with sudo."
 
@@ -89,9 +95,9 @@ success "Database ready"
 step "Downloading DeployManager v${RELEASE_VERSION}"
 TMPFILE=$(mktemp /tmp/deploymanager-XXXXXX.tar.gz)
 curl -fsSL "$RELEASE_URL" -o "$TMPFILE"
-
-if [[ -n "$RELEASE_SHA256" ]]; then
-  echo "${RELEASE_SHA256}  ${TMPFILE}" | sha256sum -c &>/dev/null \
+EXPECTED_SHA=$(curl -fsSL "$RELEASE_SHA256_URL" | awk '{print $1}')
+if [[ -n "$EXPECTED_SHA" ]]; then
+  echo "${EXPECTED_SHA}  ${TMPFILE}" | sha256sum -c &>/dev/null \
     || error "Checksum mismatch — download may be corrupted."
   success "Checksum verified"
 fi
